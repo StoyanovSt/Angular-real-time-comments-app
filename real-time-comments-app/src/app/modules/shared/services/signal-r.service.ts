@@ -24,4 +24,8 @@ export class SignalRService {
                 console.error(err);
             });
     }
+
+    public get connection(): SignalR.HubConnection {
+        return this.hubConnection;
+    }
 }
