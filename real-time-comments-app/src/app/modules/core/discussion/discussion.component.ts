@@ -8,13 +8,19 @@ import { SignalRService } from '../../shared/services/signal-r.service';
     styleUrls: ['./discussion.component.css']
 })
 export class DiscussionComponent implements OnInit, OnDestroy {
+    public comment: string = '';
+    public comments: string[] = [];
+
     constructor(private signalRService: SignalRService) { }
 
     ngOnInit(): void {
         this.signalRService.startConnection()
             .then(() => {
                 //adds listener
-                this.signalRService.connection.on('ReceiveComment', (...args: any[]): void => {
+                this.signalRService.connection.on('ReceiveComment', (...args: string[]): void => {
+                    const [, comment] = [...args];
+
+                    this.comments.push(comment);
                 });
             })
             .catch(err => {
@@ -28,4 +34,18 @@ export class DiscussionComponent implements OnInit, OnDestroy {
             console.log('Connection is dropped.');
         });
     }
+
+    public onFocusInTextArea(textAreaRef: any): void {
+        (textAreaRef as HTMLElement).classList.add('focused');
+    }
+
+    public onFocusOutTextArea(textAreaRef: any): void {
+        (textAreaRef as HTMLElement).classList.remove('focused');
+    }
+
+    public onLeavingAComment(): void {
+        this.signalRService.connection.invoke('SendComment', '', this.comment.trim());
+        this.comment = '';
+    }
+
 }

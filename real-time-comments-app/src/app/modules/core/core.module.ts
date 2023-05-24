@@ -1,17 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { DiscussionComponent } from './discussion/discussion.component';
+import { CommentComponent } from './discussion/components/comment/comment.component';
 
 @NgModule({
     declarations: [
-        DiscussionComponent
+        DiscussionComponent,
+        CommentComponent
     ],
     imports: [
         CommonModule,
+        FormsModule
     ],
     exports: [
-        DiscussionComponent
+        DiscussionComponent,
+        CommentComponent
     ]
 })
 export class CoreModule { }
